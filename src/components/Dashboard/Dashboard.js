@@ -5,17 +5,29 @@ import { getData } from '../../actions';
 import { Table, Checkbox, Form, FormGroup, FormControl, Grid, Col, Row } from 'react-bootstrap';
 
 class Dashboard extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state={
+			searchText: ''
+		};
+
+		this.handleSearch = this.handleSearch.bind(this)
+	}
 
 	componentWillMount() {
 		this.props.getData();
 	}
 
 	handleSearch(e) {
-		console.log(e)
+		this.setState({
+			searchText: e.target.value
+		});
 	}
 
 	render() {
 		const { info } = this.props;
+		const { searchText } = this.state;
 
 		return(
 			<Grid>
@@ -37,19 +49,22 @@ class Dashboard extends Component {
 							</tr>
 							</thead>
 
-
 							<tbody>
 							{
 								Object.keys(info.data).map((country, index) => {
 									const companies =  info.data[country];
+									const regex = RegExp(searchText,'gi');
 
-									return (
-										<tr key={index}>
-											<td><Checkbox> </Checkbox></td>
-											<td>{country}</td>
-											<td>{companies}</td>
-										</tr>
-									)
+
+									if(searchText.length && regex.test(companies) || regex.test(country)) {
+										return (
+											<tr key={index}>
+												<td><Checkbox> </Checkbox></td>
+												<td>{country}</td>
+												<td>{companies}</td>
+											</tr>
+										)
+									}
 								})
 							}
 							</tbody>
@@ -57,7 +72,6 @@ class Dashboard extends Component {
 					</Col>
 				</Row>
 			</Grid>
-
 		)
 	}
 }
