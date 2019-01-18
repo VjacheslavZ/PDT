@@ -7,7 +7,7 @@ const initialState = {
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case GET_DATA:
-			const data = [];
+			const data = {};
 
 			action.payload.map((city) => {
 				const { uspto_tm_document } = city;
@@ -18,13 +18,15 @@ export default function (state = initialState, action) {
 
 				} else {
 					const companyInfo = base_application_form.case_file_owners.case_file_owner;
-					const { city, country_name } = companyInfo;
+					const { country_name, name } = companyInfo;
 
-					data.push({
-						city: city,
-						country_name: country_name
-					});
+					if(data[country_name]) {
+						data[country_name] = data[country_name] + ', ' + name;
+					} else {
+						data[country_name] = name;
+					}
 				}
+
 			});
 
 			return {

@@ -16,13 +16,4 @@ class App extends Component {
   }
 }
 
-/*
-* TODO
-* trademark_case_file:
-    base_application_form:
-*
-* */
-
-const mapStateToProprs = state => ({});
-
 export default App;
